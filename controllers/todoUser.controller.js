@@ -16,7 +16,6 @@ exports.create = (req, res) => {
 
     todo.findAll({ where: condition })
         .then(data => {
-            console.log('xxxxxx', data.length);
             if (data.length) {
                 res.status(400).send({
                     message: "该用户已存在"
@@ -52,13 +51,12 @@ exports.create = (req, res) => {
 
 exports.findAll = (req, res) => {
 
-    // const username = req.query.username;
-    // var condition = username ? { username: { [Op.like]: `%${username}%` } } : null;
-    var condition = { username: req.body.username };
+    const username = req.body.username;
+    var condition = username ? { username: { [Op.like]: `%${username}%` } } : null;
+    // var condition = { username: req.body.username };
 
     todo.findAll({ where: condition })
         .then(data => {
-            console.log('xxxxxx', data.length);
             res.send(data);
         })
         .catch(err => {
