@@ -19,7 +19,8 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-db.todoList = require("./todo.model.js")(sequelize, Sequelize);
-db.tutorials = require("./tutorial.model.js")(sequelize, Sequelize);
+db.todoList = require("./todoList.model.js")(sequelize, Sequelize);
+// db.tutorials = require("./tutorial.model.js")(sequelize, Sequelize);
+db.todoUser = require("./todoUser.model.js")(sequelize, Sequelize);
 
 module.exports = db;

@@ -2,6 +2,7 @@ var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
+var session = require('express-session')
 var logger = require('morgan');
 
 const db = require("./models");
@@ -13,7 +14,8 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var birdRouter = require('./routes/bird');
 var turorialRouter = require('./routes/turorial.routes');
-var todoRouter = require('./routes/todo.router');
+var todoListRouter = require('./routes/todoList.router');
+var todoUserRouter = require('./routes/todoUser.router');
 
 
 var app = express();
@@ -26,15 +28,26 @@ app.use(logger('dev'));
 // 配置解析请求体，JSON请求参数
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
+app.use(cookieParser('chunyang_cookie'));
+
+app.use(session({
+    secret: 'chunyang_cookie',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        maxAge: 10 * 1000  // 有效期，单位是毫秒
+    }
+}))
+
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/public', express.static(path.join(__dirname, 'public')));
 
 app.use('/api', indexRouter);
 app.use('/api/users', usersRouter);
-app.use('/api/bird', birdRouter); todoRouter
+app.use('/api/bird', birdRouter);
 app.use('/api/turorial', turorialRouter);
-app.use('/api/todo', todoRouter);
+app.use('/api/todo', todoListRouter);
+app.use('/api/todo', todoUserRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

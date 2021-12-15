@@ -11,14 +11,14 @@ exports.create = (req, res) => {
         return;
     }
 
-    // Create a Tutorial
+    // Create a todoList
     const params = {
         title: req.body.title,
         status: req.body.status ? req.body.status || req.body.status : '待办',
         isFav: req.body.isFav ? req.body.isFav : false
     };
 
-    // Save Tutorial in the database
+    // Save todoList in the database
     todo.create(params)
         .then(data => {
             res.send(data);
@@ -26,12 +26,13 @@ exports.create = (req, res) => {
         .catch(err => {
             res.status(500).send({
                 message:
-                    err.message || "Some error occurred while creating the Tutorial."
+                    err.message || "Some error occurred while creating the todoList."
             });
         });
 };
 
 exports.findAll = (req, res) => {
+    console.log('xxxx', req.session);
     const title = req.query.title;
     var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
 
@@ -42,7 +43,7 @@ exports.findAll = (req, res) => {
         .catch(err => {
             res.status(500).send({
                 message:
-                    err.message || "Some error occurred while retrieving tutorials."
+                    err.message || "Some error occurred while retrieving todoList."
             });
         });
 };
@@ -67,7 +68,7 @@ exports.update = (req, res) => {
         })
         .catch(err => {
             res.status(500).send({
-                message: "Error updating Tutorial with id=" + id
+                message: "Error updating todoList with id=" + id
             });
         });
 };
@@ -81,17 +82,17 @@ exports.delete = (req, res) => {
         .then(num => {
             if (num == 1) {
                 res.send({
-                    message: "Tutorial was deleted successfully!"
+                    message: "todoList was deleted successfully!"
                 });
             } else {
                 res.send({
-                    message: `Cannot delete Tutorial with id=${id}. Maybe Tutorial was not found!`
+                    message: `Cannot delete todoList with id=${id}. Maybe todoList was not found!`
                 });
             }
         })
         .catch(err => {
             res.status(500).send({
-                message: "Could not delete Tutorial with id=" + id
+                message: "Could not delete todoList with id=" + id
             });
         });
 };
