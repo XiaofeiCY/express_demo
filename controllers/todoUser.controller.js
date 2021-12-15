@@ -23,7 +23,7 @@ exports.create = (req, res) => {
                 return;
             } else {
                 const params = {
-                    userid: 'chunyang-' + uuidv4(),
+                    userid: req.body.username + '-' + uuidv4(),
                     username: req.body.username,
                     password: req.body.password
                 }
